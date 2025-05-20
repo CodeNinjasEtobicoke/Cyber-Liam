@@ -16,8 +16,8 @@ public class EnemyControls : MonoBehaviour
 
     
 
-    private float currentAttakingTime = 0f;
-    private float maxAttackingTime = 2f;
+    private float currentAttackingTime = 0f;
+    private float maxAttackingTime = 1f;
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +40,26 @@ public class EnemyControls : MonoBehaviour
         {
             rigidbodyEnemy.velocity = transform.forward * speed;
         }
+        else
+        {
+            Attack();
+        }
 
+        animatorEnemy.SetBool("Walk", isFollowingTarget);
+    }
+    
+
+    void Attack()
+    {
+        rigidbodyEnemy.velocity = Vector3.zero;
+
+        currentAttackingTime += Time.deltaTime;
+        
+        if (currentAttackingTime > maxAttackingTime)
+        {
+            currentAttackingTime = 0f;
+            int rand = Random.Range(1, 5);
+            animatorEnemy.SetTrigger("Attack"+ rand);
+        }
     }
 }
